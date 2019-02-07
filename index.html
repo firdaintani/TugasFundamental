@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tugas-Firda N</title>
+    <style>
+        table, tr, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+            margin: 50px;
+            
+            }
+            h3 {
+                text-align: center
+            }
+        
+</style>
+</head>
+
+<body>
+    <center>
+        <table>
+            <tr>
+                <td>
+                    <h3>Data Manusia</h3>
+
+                    <input type="text" placeholder="Nama"><br /><br />
+                    <input type="number" placeholder="Usia"><br /><br />
+                    Kelamin: <input type="radio" name="kelamin" value="Pria" checked>Pria
+                    <input type="radio" name="kelamin" value="Wanita">Wanita<br /><br />
+                    <input type="text" placeholder="Pekerjaan"><br /><br />
+                    <input type="button" onclick="tambah()" value="Submit"><br /><br />
+                    Sort berdasarkan : <br />
+                    <input type="button" onclick="sorting(0)" value="Nama">
+                    <input type="button" onclick="sortbyUsia()" value="Usia">
+                    <input type="button" onclick="sorting(1)" value="Kelamin">
+                    <input type="button" onclick="sorting(2)" value="Pekerjaan">
+
+                </td>
+            </tr>
+        </table>
+        <br />
+
+        <h1></h1>
+        <table>
+            <tbody id="tabelHasil">
+
+            </tbody>
+        </table>
+
+    </center>
+    <script>
+        var data = []
+        class Manusia {
+            constructor(nama, usia, kelamin, pekerjaan) {
+                this.nama = nama;
+                this.usia = usia;
+                this.kelamin = kelamin;
+                this.pekerjaan = pekerjaan;
+
+            }
+        }
+
+        var tambah = () => {
+            var selektor = document.getElementsByTagName('input')
+            var nama = selektor[0].value
+            var usia = selektor[1].value
+            var pekerjaan = selektor[4].value
+            var kelamin = document.querySelector('input[name="kelamin"]:checked').value;
+            // alert (kelamin)
+            if (nama == '' || usia == '' || pekerjaan == '' || kelamin == '') {
+                // alert('isi dulu!')
+                document.getElementsByTagName('h1')[0].style.color = 'red'
+                document.getElementsByTagName('h1')[0].innerHTML = 'harus diisi!'
+            } else {
+                document.getElementsByTagName('h1')[0].innerHTML = ''
+
+                var manusiaBr = new Manusia(nama, usia, kelamin, pekerjaan)
+
+                data.push(manusiaBr)
+
+                tampilData(data)
+
+                selektor[0].value = ''
+                selektor[1].value = ''
+                selektor[4].value = ''
+
+            }
+
+        }
+
+        var sorting = (num) => {
+            if (num == 0) {
+                sortby("nama")
+            } else if (num == 1) {
+                sortby("kelamin")
+            } else if (num == 2) {
+                sortby("pekerjaan")
+            }
+
+        }
+
+        var sortby = (kategori) => {
+            var hasilSort = data.sort(function (a, b) {
+                pembanding = 0;
+                if (a[kategori] > b[kategori]) {
+                    pembanding = 1;
+                } else if (a[kategori] < b[kategori]) {
+                    pembanding = -1;
+                }
+                return pembanding;
+            });
+            tampilData(hasilSort)
+        }
+
+        var sortbyUsia=()=>{
+        var hasilSort = data.sort(function(a,b){
+        return a.usia-b.usia
+        });
+
+        tampilData(hasilSort)
+
+    }
+
+        var tampilData = (arr) => {
+
+            var tampil = ''
+            for (i = 0; i < arr.length; i++) {
+                tampil +=
+                    `<tr>
+            <td>${arr[i].nama}</td>                                
+            <td>${arr[i].usia}</td>                                
+            <td>${arr[i].kelamin}</td>                                
+            <td>${arr[i].pekerjaan}</td>                                
+            
+            </tr>`
+
+            }
+            document.getElementById('tabelHasil').innerHTML = tampil
+
+        }
+    </script>
+</body>
+
+</html>
